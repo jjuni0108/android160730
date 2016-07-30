@@ -41,9 +41,30 @@ public class CrimePagerActivity extends AppCompatActivity {
 
         for (int i = 0; i < mCrimes.size(); i++) {
             if (mCrimes.get(i).getId().equals(crimeId)) {
+                setTitle(mCrimes.get(i).getTitle());
                 mViewPager.setCurrentItem(i);
                 break;
             }
         }
+        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                String title=mCrimes.get(position).getTitle();
+                if(title!=null){
+                    setTitle(title);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
     }
 }
