@@ -14,6 +14,7 @@ public class CrimeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_crime);
         FragmentManager fm= getSupportFragmentManager();
         Fragment fragment=fm.findFragmentById(R.id.fragmentConainer);
+
         if(fragment==null){
             fragment=new CrimFragment();
             FragmentTransaction ft=fm.beginTransaction();
