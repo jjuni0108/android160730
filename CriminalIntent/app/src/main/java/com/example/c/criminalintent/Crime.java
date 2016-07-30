@@ -1,5 +1,6 @@
 package com.example.c.criminalintent;
 
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -8,9 +9,12 @@ import java.util.UUID;
 public class Crime {
     private String mTitle;
     private UUID mId;
+    private Date mDate;
+    private boolean mSolved;
 
     public Crime(){
         mId=UUID.randomUUID();
+        mDate=new Date();
     }
 
     public String getTitle() {
@@ -29,11 +33,19 @@ public class Crime {
         mId = id;
     }
 
-    @Override
-    public String toString() {
-        return "Crime{" +
-                "mTitle='" + mTitle + '\'' +
-                ", mId=" + mId +
-                '}';
+    public Date getDate() {
+        return mDate;
+    }
+
+    public void setDate(Date date) {
+        mDate = date;
+    }
+
+    public boolean isSolved() {
+        return mSolved;
+    }
+
+    public void setSolved(boolean solved) {
+        mSolved = solved;
     }
 }
