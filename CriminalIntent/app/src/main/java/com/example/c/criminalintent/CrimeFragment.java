@@ -14,6 +14,9 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 
+import com.example.c.criminalintent.data.Crime;
+import com.example.c.criminalintent.data.CrimeLab;
+
 import java.util.UUID;
 
 

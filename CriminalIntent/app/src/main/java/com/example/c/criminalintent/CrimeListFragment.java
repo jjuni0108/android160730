@@ -12,6 +12,9 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.c.criminalintent.data.Crime;
+import com.example.c.criminalintent.data.CrimeLab;
+
 import java.util.ArrayList;
 
 public class CrimeListFragment extends Fragment {
@@ -26,7 +29,7 @@ public class CrimeListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mCrimes=CrimeLab.getInstance(getActivity()).getCrimes();
+        mCrimes= CrimeLab.getInstance(getActivity()).getCrimes();
     }
 
     @Override
