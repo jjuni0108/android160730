@@ -21,6 +21,9 @@ import java.util.UUID;
  * A simple {@link Fragment} subclass.
  */
 public class CrimeFragment extends Fragment {
+    //상수로 만들어서사용하기
+    public static final String EXTRA_ID = "com.example.c.criminalintent.crime_id";
+
     Crime mCrime;
     EditText mTitleField;
     Button mDateButton;
@@ -30,22 +33,31 @@ public class CrimeFragment extends Fragment {
         // Required empty public constructor
     }
 
+    public static CrimeFragment newInstance(UUID crimeId) {
+        Bundle args = new Bundle();
+        args.putSerializable(EXTRA_ID, crimeId);
+        CrimeFragment fragment = new CrimeFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mCrime=new Crime();
+        mCrime = new Crime();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v= inflater.inflate(R.layout.fragment_crime, container, false);
-        UUID crimeId= (UUID)getActivity().getIntent().getSerializableExtra("id");
+        View v = inflater.inflate(R.layout.fragment_crime, container, false);
+//        UUID crimeId= (UUID)getActivity().getIntent().getSerializableExtra("id");
+
+        UUID crimeId = (UUID) getArguments().getSerializable(EXTRA_ID);
         mCrime = CrimeLab.getInstance(getActivity()).getCrime(crimeId);
 
-        mTitleField=(EditText)v.findViewById(R.id.crime_title);
+        mTitleField = (EditText) v.findViewById(R.id.crime_title);
         mTitleField.setText(mCrime.getTitle());
         mTitleField.addTextChangedListener(new TextWatcher() {
             @Override
@@ -65,7 +77,7 @@ public class CrimeFragment extends Fragment {
         });
         mDateButton = (Button) v.findViewById(R.id.crime_date);
         mDateButton.setText(mCrime.getDate().toString());
-        mSolvedCheckBox= (CheckBox) v.findViewById(R.id.crime_solved);
+        mSolvedCheckBox = (CheckBox) v.findViewById(R.id.crime_solved);
         mSolvedCheckBox.setChecked(mCrime.isSolved());
         mSolvedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

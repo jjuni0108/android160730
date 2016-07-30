@@ -13,7 +13,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 public class CrimeListFragment extends Fragment {
 
@@ -44,7 +43,7 @@ public class CrimeListFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Crime c = mCrimes.get(position);
                 Intent intent= new Intent(getActivity(),CrimeActivity.class);
-                intent.putExtra("id",c.getId());
+                intent.putExtra(CrimeFragment.EXTRA_ID,c.getId());
                 startActivity(intent);
             }
         });
