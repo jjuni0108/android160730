@@ -18,13 +18,13 @@ import android.widget.EditText;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CrimFragment extends Fragment {
+public class CrimeFragment extends Fragment {
     Crime mCrime;
     EditText mTitleField;
     Button mDateButton;
     CheckBox mSolvedCheckBox;
 
-    public CrimFragment() {
+    public CrimeFragment() {
         // Required empty public constructor
     }
 
