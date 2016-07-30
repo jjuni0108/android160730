@@ -76,4 +76,11 @@ public class CrimeListFragment extends Fragment {
 
         }
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        CrimeAdapter crimeAdapter= (CrimeAdapter) crimeListView.getAdapter();
+        crimeAdapter.notifyDataSetChanged();
+    }
 }
