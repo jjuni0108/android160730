@@ -16,7 +16,7 @@ import android.widget.EditText;
  * A simple {@link Fragment} subclass.
  */
 public class CrimFragment extends Fragment {
-
+//TEST
     Crime mCrime;
     EditText mTitleField;
 
