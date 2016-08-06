@@ -12,9 +12,14 @@ public class Crime {
     private Date mDate;
     private boolean mSolved;
 
-    public Crime(){
-        mId=UUID.randomUUID();
-        mDate=new Date();
+    public Crime() {
+        mId = UUID.randomUUID();
+        mDate = new Date();
+    }
+
+    public Crime(UUID id) {
+        mId = id;
+        mDate = new Date();
     }
 
     public String getTitle() {
@@ -53,4 +58,8 @@ public class Crime {
     public String toString() {
         return mTitle;
     }
+
+
+
+
 }
