@@ -5,7 +5,6 @@
     android:orientation="vertical"
     tools:context=".CrimeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
         style="@style/BigTextStyle"
         android:layout_width="match_parent"

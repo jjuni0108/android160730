@@ -152,6 +152,7 @@ public class CrimeListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        mCrimes=CrimeLab.getInstance(getActivity()).getCrimes();
         mAdapter.notifyDataSetChanged();
     }
 }
