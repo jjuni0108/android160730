@@ -6,4 +6,9 @@
         android:icon="@mipmap/ic_add"
         android:title="new crime"
         app:showAsAction="always|withText"/>
+
+    <item  android:id="@+id/menu_item_show_subtitle"
+           android:title="show subtitle"
+           app:showAsAction="never"
+        />
 </menu>
