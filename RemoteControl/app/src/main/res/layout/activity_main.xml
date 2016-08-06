@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TableLayout
+    android:id="@+id/tableLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -31,28 +32,26 @@
         android:textSize="20dp"
         />
 
-    <TableRow android:layout_weight="1">
+    <!-- <ProgressBar
+         android:progress="30"
+         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         />-->
+    <include
+        layout="@layout/button_row"
+        android:layout_weight="1"
+        />
 
-        <Button
-            android:id="@+id/zeroButton"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="0"
-            />
-        <Button
-            android:id="@+id/oneButton"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="0"
-            />
-        <Button
-            android:id="@+id/enterButton"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="입력"
-            />
-    </TableRow>
+    <include
+        layout="@layout/button_row"
+        android:layout_weight="1"/>
+
+    <include
+        layout="@layout/button_row"
+        android:layout_weight="1"/>
+
+    <include
+        layout="@layout/button_row"
+        android:layout_weight="1"/>
 </TableLayout>

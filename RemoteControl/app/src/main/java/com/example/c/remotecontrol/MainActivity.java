@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
@@ -16,11 +18,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         selectedTextView = (TextView) findViewById(R.id.selectedTextView);
         workingTextView = (TextView) findViewById(R.id.workingTextView);
-
-        Button zeroButton = (Button) findViewById(R.id.zeroButton);
-        Button oneButton = (Button) findViewById(R.id.oneButton);
-        Button enterButton = (Button) findViewById(R.id.enterButton);
-
 
         View.OnClickListener numberListener = new View.OnClickListener() {
             @Override
@@ -38,14 +35,41 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
+        TableLayout tableLayout=(TableLayout)findViewById(R.id.tableLayout);
+        int number=1;
+        for(int i=2;i<tableLayout.getChildCount()-1;i++){
+            TableRow tableRow=(TableRow)tableLayout.getChildAt(i);
+            for(int k=0;k< tableRow.getChildCount();k++){
+                Button button =(Button) tableRow.getChildAt(k);
+                button.setText(""+number);
+                number++;
+                button.setOnClickListener(numberListener);
+            }
+
+        }
+
+        TableRow bottomRow=(TableRow)tableLayout.getChildAt(tableLayout.getChildCount()-1);
+        Button deleteButton= (Button)bottomRow.getChildAt(0);
+        Button zeroButton=(Button)bottomRow.getChildAt(1);
+        Button enterButton= (Button)bottomRow.getChildAt(2);
+
+        deleteButton.setText("delete");
+        zeroButton.setText("0");
+        enterButton.setText("입력");
 
         zeroButton.setOnClickListener(numberListener);
-        oneButton.setOnClickListener(numberListener);
-
         enterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                String str = workingTextView.getText().toString();
+                selectedTextView.setText(str);
+                workingTextView.setText("0");
+            }
+        });
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                workingTextView.setText("0");
             }
         });
 
