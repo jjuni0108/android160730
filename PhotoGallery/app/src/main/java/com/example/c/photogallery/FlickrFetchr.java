@@ -22,7 +22,7 @@ public class FlickrFetchr {
     private static final String API_KEY = "61d85f40793d1fef143ada94ecc2bdd4";
 
     public byte[] getUrlBytes(String urlSpec) throws IOException {
-
+        //네트워크 loopj , volley
 
         HttpURLConnection connection = null;
         try {
@@ -49,7 +49,7 @@ public class FlickrFetchr {
         return new String(getUrlBytes(urlSpec));
     }
 
-    public void fetchItems() {
+    public ArrayList<GalleryItem> fetchItems() {
         ArrayList<GalleryItem> items=new ArrayList<GalleryItem>();
         String url = Uri.parse("https://api.flickr.com/services/rest/")
                 .buildUpon()
@@ -71,10 +71,12 @@ public class FlickrFetchr {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
+        return items;
     }
 
     private void parseItem(List<GalleryItem> items, JSONObject jsonBody) throws JSONException {
+        //안드로이드용 json 라이브러리 Gson
+
         JSONObject photosJsonObject = jsonBody.getJSONObject("photos");
         JSONArray photoJsonArray = photosJsonObject.getJSONArray("photo");
         for (int i = 0; i < photoJsonArray.length(); i++) {
