@@ -66,6 +66,9 @@ public class MainActivity extends AppCompatActivity {
                 String str = workingTextView.getText().toString();
                 selectedTextView.setText(str);
                 workingTextView.setText("0");
+                mPoint.setTel(str);
+                PointLab.getInstance(MainActivity.this).add(mPoint);
+                mPoint=null;
             }
         });
         deleteButton.setOnClickListener(new View.OnClickListener() {
@@ -84,8 +87,24 @@ public class MainActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    Point mPoint;
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        mPoint= new Point();
+
+        switch (item.getItemId()){
+            case  R.id.menu_item_americano :
+                mPoint.setBeverage("americano");
+                break;
+            case  R.id.menu_item_caffemoca :
+                mPoint.setBeverage("caffemoca");
+                break;
+            case  R.id.menu_item_caffelatte :
+                mPoint.setBeverage("caffelatte");
+                break;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 }
