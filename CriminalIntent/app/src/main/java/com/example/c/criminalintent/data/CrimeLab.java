@@ -107,6 +107,9 @@ public class CrimeLab {
     public File getPhotoFile(Crime crime){
 //        String path = Environment.getExternalStorageDirectory()+""
         //path +"/pictures/abc.jpg
+        // getExternalFilesDir /
+        //
+
         File externalFilesDir  = mAppContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 
         if(externalFilesDir==null){

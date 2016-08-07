@@ -3,10 +3,10 @@ package com.example.c.criminalintent;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -61,13 +61,6 @@ public class CrimeFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mCrime = new Crime();
-        mPhotofile = CrimeLab.getInstance(getActivity()).getPhotoFile(mCrime);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -76,6 +69,7 @@ public class CrimeFragment extends Fragment {
 
         UUID crimeId = (UUID) getArguments().getSerializable(EXTRA_ID);
         mCrime = CrimeLab.getInstance(getActivity()).getCrime(crimeId);
+        mPhotofile = CrimeLab.getInstance(getActivity()).getPhotoFile(mCrime);
 
         mTitleField = (EditText) v.findViewById(R.id.crime_title);
         mTitleField.setText(mCrime.getTitle());
@@ -129,6 +123,7 @@ public class CrimeFragment extends Fragment {
         });
 
         mPhotoView = (ImageView) v.findViewById(R.id.crime_photo);
+        updatePhotoView();
         return v;
     }
 
@@ -153,6 +148,12 @@ public class CrimeFragment extends Fragment {
     }
 
     private void updatePhotoView() {
+        if(mPhotofile == null || !mPhotofile.exists()){
+            mPhotoView.setImageDrawable(null);
+        }else{
+            Bitmap bitmap = PictureUtils.getScaledBitmap(mPhotofile.getPath(),getActivity());
+            mPhotoView.setImageBitmap(bitmap);
+        }
 
     }
 
