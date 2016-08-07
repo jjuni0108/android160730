@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto"
-      android:icon="@mipmap/ic_menu"
-    >
-        <item android:id="@+id/menu1" android:title="아메리카노"/>
-        <item android:id="@+id/menu2" android:title="라떼"/>
-        <item android:id="@+id/menu3" android:title="홍차"/>
 
+    >
+        <item android:id="@+id/menu_item_caffelatte" android:title="caffe latte"/>
+        <item android:id="@+id/americano" android:title="americano"/>
+        <item android:id="@+id/caffemoca" android:title="caffemoca"/>
 </menu>
