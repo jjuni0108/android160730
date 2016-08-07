@@ -1,5 +1,6 @@
 package com.example.c.criminalintent;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -26,6 +27,23 @@ public class CrimeListFragment extends Fragment {
     //    ListView crimeListView;
     private RecyclerView mCrimeRecyclerView;
     private CrimeAdapter mAdapter;
+    private Callbacks mCallbacks;
+
+    public interface  Callbacks{
+        void onCrimeSelected(Crime crime);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mCallbacks = (Callbacks) context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallbacks=null;
+    }
 
     public CrimeListFragment() {
         // Required empty public constructor
@@ -65,9 +83,10 @@ public class CrimeListFragment extends Fragment {
         @Override
         public void onClick(View v) {
 //                Intent intent= new Intent(getActivity(),CrimeActivity.class);
-            Intent intent = new Intent(getActivity(), CrimePagerActivity.class);
-            intent.putExtra(CrimeFragment.EXTRA_ID, mCrime.getId());
-            startActivity(intent);
+//            Intent intent = new Intent(getActivity(), CrimePagerActivity.class);
+//            intent.putExtra(CrimeFragment.EXTRA_ID, mCrime.getId());
+//            startActivity(intent);
+            mCallbacks.onCrimeSelected(mCrime);
         }
     }
 

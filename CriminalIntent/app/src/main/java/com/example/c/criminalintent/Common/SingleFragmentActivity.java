@@ -1,6 +1,7 @@
 package com.example.c.criminalintent.Common;
 
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -12,21 +13,27 @@ import com.example.c.criminalintent.R;
  * Created by c on 2016-07-30.
  */
 public abstract class SingleFragmentActivity extends AppCompatActivity {
-    protected  abstract  Fragment createFragment();
+    protected abstract Fragment createFragment();
+
+    //Layout 리소스를 리턴해주는 어노테이션
+    @LayoutRes
+    protected int getLayoutResId() {
+        return R.layout.activity_frame;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_frame);
-        FragmentManager fm= getSupportFragmentManager();
-        Fragment fragment=fm.findFragmentById(R.id.fragmentConainer);
+        setContentView(getLayoutResId());
+        FragmentManager fm = getSupportFragmentManager();
+        Fragment fragment = fm.findFragmentById(R.id.fragmentContainer);
 
-        if(fragment==null){
+        if (fragment == null) {
 //            fragment=new CrimeFragment();
 //            fragment = new CrimeListFragment();
             fragment = createFragment();
-            FragmentTransaction ft=fm.beginTransaction();
-            ft.add(R.id.fragmentConainer,fragment);
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.add(R.id.fragmentContainer, fragment);
             ft.commit();
         }
     }
