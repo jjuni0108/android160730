@@ -3,7 +3,9 @@ package com.example.c.criminalintent;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -15,10 +17,13 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.example.c.criminalintent.data.Crime;
 import com.example.c.criminalintent.data.CrimeLab;
 
+import java.io.File;
 import java.util.Date;
 import java.util.UUID;
 
@@ -29,12 +34,19 @@ import java.util.UUID;
 public class CrimeFragment extends Fragment {
     //상수로 만들어서사용하기
     public static final String EXTRA_ID = "com.example.c.criminalintent.crime_id";
-    public static final int REQUEST_DATE =1;
+    public static final int REQUEST_DATE = 100;
+    public static final int REQUEST_PHOTO = 101;
 
     Crime mCrime;
     EditText mTitleField;
     Button mDateButton;
     CheckBox mSolvedCheckBox;
+    ImageView mPhotoView;
+    ImageButton mPhotoButton;
+    File mPhotofile;
+
+
+
 
     public CrimeFragment() {
         // Required empty public constructor
@@ -52,6 +64,7 @@ public class CrimeFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mCrime = new Crime();
+        mPhotofile = CrimeLab.getInstance(getActivity()).getPhotoFile(mCrime);
     }
 
     @Override
@@ -88,11 +101,10 @@ public class CrimeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 DatePickerFragment dialog = DatePickerFragment.newInstance(mCrime.getDate());
-                dialog.setTargetFragment(CrimeFragment.this,REQUEST_DATE);
-                dialog.show(getFragmentManager(),"Dialog");
+                dialog.setTargetFragment(CrimeFragment.this, REQUEST_DATE);
+                dialog.show(getFragmentManager(), "Dialog");
             }
         });
-
 
 
         mSolvedCheckBox = (CheckBox) v.findViewById(R.id.crime_solved);
@@ -103,6 +115,20 @@ public class CrimeFragment extends Fragment {
                 mCrime.setSolved(isChecked);
             }
         });
+
+        mPhotoButton = (ImageButton) v.findViewById(R.id.crime_camera);
+
+        mPhotoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                Uri uri = Uri.fromFile(mPhotofile);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+                startActivityForResult(intent,REQUEST_PHOTO);
+            }
+        });
+
+        mPhotoView = (ImageView) v.findViewById(R.id.crime_photo);
         return v;
     }
 
@@ -110,14 +136,23 @@ public class CrimeFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode==REQUEST_DATE){
-            if(resultCode== Activity.RESULT_OK){
-                Date date = (Date)data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
+        if (requestCode == REQUEST_DATE) {
+            if (resultCode == Activity.RESULT_OK) {
+                Date date = (Date) data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
                 mCrime.setDate(date);
                 mDateButton.setText(mCrime.getDate().toString());
             }
+        }else if (requestCode == REQUEST_PHOTO){
+            if (resultCode == Activity.RESULT_OK) {
+                updatePhotoView();
+
+            }
         }
 
+
+    }
+
+    private void updatePhotoView() {
 
     }
 

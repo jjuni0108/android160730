@@ -12,6 +12,10 @@ public class Crime {
     private Date mDate;
     private boolean mSolved;
 
+    public String getPhotoFileName(){
+        return "img"+getId().toString()+".jpg";
+    }
+
     public Crime() {
         mId = UUID.randomUUID();
         mDate = new Date();
