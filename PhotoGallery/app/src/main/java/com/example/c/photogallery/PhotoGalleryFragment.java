@@ -21,6 +21,8 @@ public class PhotoGalleryFragment extends Fragment {
 
     RecyclerView mPhotoRecyclerView;
     private ArrayList<GalleryItem> mItems = new ArrayList<GalleryItem>();
+    private ThumnailDownloader mThumnailDownloader;
+
 
     public static PhotoGalleryFragment newInstance() {
         PhotoGalleryFragment fragment = new PhotoGalleryFragment();
@@ -81,6 +83,7 @@ public class PhotoGalleryFragment extends Fragment {
             GalleryItem item = mGalleryItems.get(position);
             Drawable d= getResources().getDrawable(R.mipmap.ic_launcher);
             holder.bindDrawable(d);
+            mThumnailDownloader .queueThumbnail(item.getUrl());
         }
 
         @Override
@@ -94,7 +97,17 @@ public class PhotoGalleryFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         new FetchItemsTask().execute();
+        mThumnailDownloader = new ThumnailDownloader();
+        mThumnailDownloader.start();
+        mThumnailDownloader.getLooper();
 
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mThumnailDownloader.quit();
     }
 
     @Nullable
