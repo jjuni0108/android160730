@@ -1,8 +1,11 @@
 package com.example.c.photogallery;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -21,7 +24,7 @@ public class PhotoGalleryFragment extends Fragment {
 
     RecyclerView mPhotoRecyclerView;
     private ArrayList<GalleryItem> mItems = new ArrayList<GalleryItem>();
-    private ThumnailDownloader mThumnailDownloader;
+    private ThumnailDownloader<PhotoHolder>  mThumnailDownloader;
 
 
     public static PhotoGalleryFragment newInstance() {
@@ -81,9 +84,9 @@ public class PhotoGalleryFragment extends Fragment {
         @Override
         public void onBindViewHolder(PhotoHolder holder, int position) {
             GalleryItem item = mGalleryItems.get(position);
-            Drawable d= getResources().getDrawable(R.mipmap.ic_launcher);
-            holder.bindDrawable(d);
-            mThumnailDownloader .queueThumbnail(item.getUrl());
+//            Drawable d= getResources().getDrawable(R.mipmap.ic_launcher);
+//            holder.bindDrawable(d);
+            mThumnailDownloader .queueThumbnail(holder,item.getUrl());
         }
 
         @Override
@@ -92,17 +95,35 @@ public class PhotoGalleryFragment extends Fragment {
         }
     }
 
+    Handler responseHandler = new Handler();
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         new FetchItemsTask().execute();
-        mThumnailDownloader = new ThumnailDownloader();
+        mThumnailDownloader = new ThumnailDownloader(responseHandler);
+
+        mThumnailDownloader.setThumbnailLoadListener(new ThumnailDownloader.ThumbnailLoadListener<PhotoHolder>() {
+            @Override
+            public void onThumbnailDownloaded(PhotoHolder target, Bitmap thumbnail) {
+                if(isAdded()) {
+                    Drawable drawable = new BitmapDrawable(getResources(), thumbnail);
+                    target.bindDrawable(drawable);
+                }
+            }
+        });
+
         mThumnailDownloader.start();
         mThumnailDownloader.getLooper();
 
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mThumnailDownloader.clearQueue();
+    }
 
     @Override
     public void onDestroy() {
