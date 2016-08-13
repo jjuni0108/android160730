@@ -151,7 +151,7 @@ public class PhotoGalleryFragment extends Fragment {
             public boolean onQueryTextSubmit(String query) {
                 Log.d("SearchView","queryText  : "+query);
                 QueryPreperence.setStoredQuery(getActivity(),query);
-                new FetchItemsTask(null).execute();
+                updatesItems();
                 return false;
             }
 

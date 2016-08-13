@@ -64,9 +64,6 @@ public class FlickrFetchr {
     }
 
     public ArrayList<GalleryItem> searchPhotos(String query) {
-        if(query.equals("")){
-            fetchRecentPhotos();
-        }
         String url = buildUrl(METHOD_SEARCH, query);
         return downloadGalleryItems(url);
     }
