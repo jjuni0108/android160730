@@ -38,7 +38,13 @@ public class PhotoGalleryFragment extends Fragment {
     }
 
     //키:61d85f40793d1fef143ada94ecc2bdd4
-    class FetchItemsTask extends AsyncTask<String, Void, ArrayList<GalleryItem>> {
+    class FetchItemsTask extends AsyncTask<Void, Void, ArrayList<GalleryItem>> {
+        String query;
+
+        public FetchItemsTask(String query) {
+            this.query = query;
+        }
+
         @Override
         protected void onPostExecute(ArrayList<GalleryItem> galleryItems) {
             super.onPostExecute(galleryItems);
@@ -48,9 +54,16 @@ public class PhotoGalleryFragment extends Fragment {
         }
 
         @Override
-        protected ArrayList<GalleryItem> doInBackground(String... params) {
+        protected ArrayList<GalleryItem> doInBackground(Void... params) {
 //            return new FlickrFetchr().fetchItems();
-            return  new FlickrFetchr().searchPhotos(params[0]);
+
+            if(query==null){
+                return new FlickrFetchr().fetchRecentPhotos();
+            }else{
+                return  new FlickrFetchr().searchPhotos(query);
+            }
+
+
         }
     }
 
@@ -107,7 +120,7 @@ public class PhotoGalleryFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        new FetchItemsTask().execute("");
+        updatesItems();
         mThumnailDownloader = new ThumnailDownloader(responseHandler);
 
         mThumnailDownloader.setThumbnailLoadListener(new ThumnailDownloader.ThumbnailLoadListener<PhotoHolder>() {
@@ -137,7 +150,8 @@ public class PhotoGalleryFragment extends Fragment {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 Log.d("SearchView","queryText  : "+query);
-                new FetchItemsTask().execute(query);
+                QueryPreperence.setStoredQuery(getActivity(),query);
+                new FetchItemsTask(null).execute();
                 return false;
             }
 
@@ -148,6 +162,22 @@ public class PhotoGalleryFragment extends Fragment {
         });
 
 
+    }
+
+
+    private void updatesItems(){
+        String query = QueryPreperence.getStoredQuery(getActivity());
+        new FetchItemsTask(query).execute();
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId()==R.id.menu_item_clear){
+            QueryPreperence.setStoredQuery(getActivity(),null);
+        }
+        updatesItems();
+        return true;
     }
 
     @Override
