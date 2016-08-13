@@ -1,5 +1,6 @@
 package com.example.c.photogallery;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -121,6 +122,9 @@ public class PhotoGalleryFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         updatesItems();
+
+        Intent intent= PollService.newIntent(getActivity());
+        getActivity().startService(intent);
         mThumnailDownloader = new ThumnailDownloader(responseHandler);
 
         mThumnailDownloader.setThumbnailLoadListener(new ThumnailDownloader.ThumbnailLoadListener<PhotoHolder>() {
