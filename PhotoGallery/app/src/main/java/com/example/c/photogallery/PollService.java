@@ -1,9 +1,12 @@
 package com.example.c.photogallery;
 
+import android.app.AlarmManager;
 import android.app.IntentService;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
+import android.os.SystemClock;
 import android.util.Log;
 
 import java.util.List;
@@ -16,13 +19,32 @@ import java.util.List;
  * helper methods.
  */
 public class PollService extends IntentService {
+    private static final int POLL_INTERNAL = 1000 *10;
+
+
 
     public PollService() {
         super("PollService");
     }
 
+
+
     public static Intent newIntent(Context context){
         return new Intent(context,PollService.class);
+    }
+
+    public static void setSeviceAlarm(Context context, boolean isOn){
+        Intent intent = PollService.newIntent(context);
+        PendingIntent pIntent =PendingIntent.getService(context,0,intent,0);
+        AlarmManager am = (AlarmManager)context.getSystemService(ALARM_SERVICE);
+        if(isOn){
+            am.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime(),POLL_INTERNAL,pIntent );
+        }else{
+            am.cancel(pIntent);
+            pIntent.cancel();
+        }
+
+
     }
 
 
@@ -66,4 +88,9 @@ public class PollService extends IntentService {
 
     }
 
+    public static boolean isServiceAlarmOn(Context context) {
+        Intent intent= PollService.newIntent(context);
+        PendingIntent pendingIntent = PendingIntent.getService(context,0,intent,PendingIntent.FLAG_NO_CREATE);
+        return pendingIntent!=null;
+    }
 }

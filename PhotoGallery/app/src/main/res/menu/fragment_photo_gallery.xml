@@ -11,4 +11,9 @@
         android:title="clear"
         app:showAsAction="never"
         />
+    <item
+        android:id="@+id/menu_item_toggle_polling"
+        android:title="start polling"
+
+        />
 </menu>

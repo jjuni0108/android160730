@@ -122,9 +122,14 @@ public class PhotoGalleryFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         updatesItems();
+        PollService.setSeviceAlarm(getActivity(),true);
 
         Intent intent= PollService.newIntent(getActivity());
         getActivity().startService(intent);
+
+
+
+
         mThumnailDownloader = new ThumnailDownloader(responseHandler);
 
         mThumnailDownloader.setThumbnailLoadListener(new ThumnailDownloader.ThumbnailLoadListener<PhotoHolder>() {
@@ -179,6 +184,9 @@ public class PhotoGalleryFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId()==R.id.menu_item_clear){
             QueryPreperence.setStoredQuery(getActivity(),null);
+        }else if(item.getItemId()==R.id.menu_item_toggle_polling){
+            boolean shouldStartAlarm =!PollService.isServiceAlarmOn(getActivity());
+            PollService.setSeviceAlarm(getActivity(),shouldStartAlarm);
         }
         updatesItems();
         return true;
