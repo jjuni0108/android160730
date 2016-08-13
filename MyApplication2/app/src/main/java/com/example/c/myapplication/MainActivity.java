@@ -3,7 +3,9 @@ package com.example.c.myapplication;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,6 +16,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.c.myapplication.photogallery.PhotoGalleryFragment;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -23,8 +27,13 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         FragmentManager fm= getSupportFragmentManager();
-
-
+        Fragment fragment = fm.findFragmentById(R.id.fragmentContainer);
+        if (fragment == null) {
+            fragment = BlankFragment.newInstance("a","b");
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.add(R.id.fragmentContainer, fragment);
+            ft.commit();
+        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -85,11 +94,30 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
+        FragmentManager fm= getSupportFragmentManager();
+        Fragment fragment = fm.findFragmentById(R.id.fragmentContainer);
         if (id == R.id.nav_camera) {
             // Handle the camera action
+            if (fragment != null) {
+                fragment = BlankFragment.newInstance("a","b");
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.replace(R.id.fragmentContainer, fragment);
+                ft.commit();
+
+            }
         } else if (id == R.id.nav_gallery) {
 
+            if (fragment != null) {
+//                fragment = BlankFragment.newInstance("a","b");
+//                FragmentTransaction ft = fm.beginTransaction();
+//                ft.add(R.id.fragmentContainer, fragment);
+//                ft.commit();
+                fragment = PhotoGalleryFragment.newInstance();
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.replace(R.id.fragmentContainer, fragment);
+                ft.commit();
+
+            }
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
