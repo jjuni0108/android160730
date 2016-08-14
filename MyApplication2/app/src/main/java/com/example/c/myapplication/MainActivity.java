@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_camera) {
             // Handle the camera action
             if (fragment != null) {
-                fragment = BlankFragment.newInstance("a","b");
+                fragment = ViewPagerFragment.newInstance();
                 FragmentTransaction ft = fm.beginTransaction();
                 ft.replace(R.id.fragmentContainer, fragment);
                 ft.commit();
