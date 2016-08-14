@@ -3,6 +3,5 @@
            android:id="@+id/fragment_gallery_image_view"
            android:scaleType="centerCrop"
            android:layout_width="match_parent"
-           android:padding="2dp"
            android:layout_height="120dp">
 </ImageView>

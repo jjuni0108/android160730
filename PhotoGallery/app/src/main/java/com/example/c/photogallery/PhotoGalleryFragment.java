@@ -30,7 +30,7 @@ public class PhotoGalleryFragment extends Fragment {
 
     RecyclerView mPhotoRecyclerView;
     private ArrayList<GalleryItem> mItems = new ArrayList<GalleryItem>();
-    private ThumnailDownloader<PhotoHolder>  mThumnailDownloader;
+    private ThumnailDownloader<PhotoHolder> mThumnailDownloader;
 
 
     public static PhotoGalleryFragment newInstance() {
@@ -58,10 +58,10 @@ public class PhotoGalleryFragment extends Fragment {
         protected ArrayList<GalleryItem> doInBackground(Void... params) {
 //            return new FlickrFetchr().fetchItems();
 
-            if(query==null){
+            if (query == null) {
                 return new FlickrFetchr().fetchRecentPhotos();
-            }else{
-                return  new FlickrFetchr().searchPhotos(query);
+            } else {
+                return new FlickrFetchr().searchPhotos(query);
             }
 
 
@@ -95,8 +95,8 @@ public class PhotoGalleryFragment extends Fragment {
 
         @Override
         public PhotoHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            LayoutInflater inflater=LayoutInflater.from(getActivity());
-            View v = inflater.inflate(R.layout.gallery_item,parent,false);
+            LayoutInflater inflater = LayoutInflater.from(getActivity());
+            View v = inflater.inflate(R.layout.gallery_item, parent, false);
             return new PhotoHolder(v);
         }
 
@@ -105,7 +105,7 @@ public class PhotoGalleryFragment extends Fragment {
             GalleryItem item = mGalleryItems.get(position);
 //            Drawable d= getResources().getDrawable(R.mipmap.ic_launcher);
 //            holder.bindDrawable(d);
-            mThumnailDownloader .queueThumbnail(holder,item.getUrl());
+            mThumnailDownloader.queueThumbnail(holder, item.getUrl());
         }
 
         @Override
@@ -122,12 +122,10 @@ public class PhotoGalleryFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         updatesItems();
-        PollService.setSeviceAlarm(getActivity(),true);
+        PollService.setSeviceAlarm(getActivity(), true);
 
-        Intent intent= PollService.newIntent(getActivity());
+        Intent intent = PollService.newIntent(getActivity());
         getActivity().startService(intent);
-
-
 
 
         mThumnailDownloader = new ThumnailDownloader(responseHandler);
@@ -135,7 +133,7 @@ public class PhotoGalleryFragment extends Fragment {
         mThumnailDownloader.setThumbnailLoadListener(new ThumnailDownloader.ThumbnailLoadListener<PhotoHolder>() {
             @Override
             public void onThumbnailDownloaded(PhotoHolder target, Bitmap thumbnail) {
-                if(isAdded()) {
+                if (isAdded()) {
                     Drawable drawable = new BitmapDrawable(getResources(), thumbnail);
                     target.bindDrawable(drawable);
                 }
@@ -150,16 +148,16 @@ public class PhotoGalleryFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.fragment_photo_gallery,menu);
+        inflater.inflate(R.menu.fragment_photo_gallery, menu);
 
-        MenuItem searchItem= menu.findItem(R.id.menu_item_search);
-        SearchView searchView=(SearchView) searchItem.getActionView();
+        MenuItem searchItem = menu.findItem(R.id.menu_item_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Log.d("SearchView","queryText  : "+query);
-                QueryPreperence.setStoredQuery(getActivity(),query);
+                Log.d("SearchView", "queryText  : " + query);
+                QueryPreperence.setStoredQuery(getActivity(), query);
                 updatesItems();
                 return false;
             }
@@ -169,12 +167,16 @@ public class PhotoGalleryFragment extends Fragment {
                 return false;
             }
         });
-
-
+        MenuItem toggleItem = menu.findItem(R.id.menu_item_toggle_polling);
+        if (PollService.isServiceAlarmOn(getActivity())) {
+            toggleItem.setTitle("stop polling");
+        } else {
+            toggleItem.setTitle("start polling");
+        }
     }
 
 
-    private void updatesItems(){
+    private void updatesItems() {
         String query = QueryPreperence.getStoredQuery(getActivity());
         new FetchItemsTask(query).execute();
     }
@@ -182,11 +184,12 @@ public class PhotoGalleryFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId()==R.id.menu_item_clear){
-            QueryPreperence.setStoredQuery(getActivity(),null);
-        }else if(item.getItemId()==R.id.menu_item_toggle_polling){
-            boolean shouldStartAlarm =!PollService.isServiceAlarmOn(getActivity());
-            PollService.setSeviceAlarm(getActivity(),shouldStartAlarm);
+        if (item.getItemId() == R.id.menu_item_clear) {
+            QueryPreperence.setStoredQuery(getActivity(), null);
+        } else if (item.getItemId() == R.id.menu_item_toggle_polling) {
+            boolean shouldStartAlarm = !PollService.isServiceAlarmOn(getActivity());
+            PollService.setSeviceAlarm(getActivity(), shouldStartAlarm);
+            getActivity().invalidateOptionsMenu();
         }
         updatesItems();
         return true;
