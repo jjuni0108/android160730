@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View view) {
             ActivityInfo activityInfo = mResolveInfo.activityInfo;
             Intent intent= new Intent(Intent.ACTION_MAIN)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     .setClassName(activityInfo.applicationInfo.packageName,activityInfo.name);
             startActivity(intent);
         }
